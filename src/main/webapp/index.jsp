@@ -10,20 +10,18 @@
 </head>
 <body>
 
-	<div class="container p-5 my-5 bg-primary text-white">
-		<h1>This is my first raw bootstrap page!</h1>
-		<p>This is inside a .container class!</p>
-	</div>
-
-	<div class="container p-5 my-5 border">
-		<h1>This is my first raw bootstrap page!</h1>
-		<p>This is inside a .container class!</p>
-		<p>Use <kbd>Ctrl</kbd> + <kbd>C</kbd> to copy this!
-	</div>
 
 	<div class="container p-5 my-5 bg-dark text-white">
-		<h1>This is my first raw bootstrap page!</h1>
-		<p>This is inside a .container class!</p>
+		<div id="login">
+        <h1>This is an example of the Implicit Grant flow</h1>
+        <button id="login-button" class="btn btn-success" onclick=loginToSpotify()>Log in with Spotify</button>
+      </div>
+      <div id="loggedin">
+        <div id="user-profile">
+        </div>
+        <div id="oauth">
+        </div>
+      </div>
 	</div>
 
 	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

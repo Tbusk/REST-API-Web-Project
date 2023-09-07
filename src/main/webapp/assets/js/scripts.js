@@ -1,53 +1,55 @@
 $(document).ready(function() {
-	
+	getArtist();
 });
-
-var request = require('request');
 
 var client_id = '1e734057a1e541cf9ad45ce766b6c519'; // Your client id
-var client_secret = '472e1755cae14d71b74f696fd38aabf7'; // Your secret
-
-// your application requests authorization
-var authOptions = {
-  url: 'https://accounts.spotify.com/api/token',
-  headers: {
-    'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-  },
-  form: {
-    grant_type: 'client_credentials'
-  },
-  json: true
-};
-
-request.post(authOptions, function(error, response, body) {
-  if (!error && response.statusCode === 200) {
-
-    // use the access token to access the Spotify Web API
-    var token = body.access_token;
-    var options = {
-      url: 'https://api.spotify.com/v1/users/xenosxen',
-      headers: {
-        'Authorization': 'Bearer ' + token
-      },
-      json: true
-    };
-    request.get(options, function(error, response, body) {
-      console.log(body);
-    });
-  }
-});
+var redirect_uri = 'http://localhost:8080/Spotify_REST_Web_Project/index.jsp';
+var stateKey = 'spotify_auth_state';
+var url = window.location.href;
+var access_token = url.substring(url.indexOf('#access_token=') + 14);
 
 function getArtist() {
-	
+
+	var deferred = $.Deferred();
 	$.ajax({
-		url: "https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg",
+		url: "https://api.spotify.com/v1/browse/categories",
 		type: 'GET',
 		dataType: "json",
 		contentType: "application/json",
+		headers: { Authorization: `Bearer ${access_token}`}
 	}).fail(function(response) {
-		
+
 	}).done(function(response) {
 		console.log(response);
 	});
-	
+
+	return deferred.promise();
+}
+
+function generateRandomString(length) {
+          var text = '';
+          var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+          for (var i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+          }
+          return text;
+        }
+        
+
+
+function loginToSpotify() {
+	var state = generateRandomString(16);
+
+            localStorage.setItem(stateKey, state);
+            var scope = 'user-read-private user-read-email';
+
+            var url = 'https://accounts.spotify.com/authorize';
+            url += '?response_type=token';
+            url += '&client_id=' + encodeURIComponent(client_id);
+            url += '&scope=' + encodeURIComponent(scope);
+            url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+            url += '&state=' + encodeURIComponent(state);
+
+            window.location = url;
 }
