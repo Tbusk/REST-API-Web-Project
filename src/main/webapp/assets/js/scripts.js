@@ -1,14 +1,38 @@
 $(document).ready(function() {
-	checkCookie();
-	getArtist();
-	getUserProfileData();
+	if(window.location.href.indexOf('access_token') == -1) {
+		console.log('NO TOKEN FOUND IN URL');
+		access_token = getCookie();
+		
+		if(access_token != "") {
+			console.log('TOKEN FOUND IN COOKIES');
+			document.getElementById('login').style.display = "none";
+			getUserProfileData();
+		} else {
+			console.log('NO TOKEN IN COOKIES');
+		}
+		
+	} else {
+		if(getCookie() != "") {
+			console.log('COOKIE FOUND.  TOKEN FOUND');
+			access_token = getCookie();
+			document.getElementById('login').style.display = "none";
+			getUserProfileData();
+		} else {
+			console.log('NO COOKIE FOUND.  CREATING ONE.');
+			createCookie();
+			access_token = getCookie();
+			document.getElementById('login').style.display = "none";
+			getUserProfileData();
+		}
+	}
+	
 });
 
 var client_id = '1e734057a1e541cf9ad45ce766b6c519'; // Your client id
 var redirect_uri = 'http://localhost:8080/Spotify_REST_Web_Project/index.jsp';
 var stateKey = 'spotify_auth_state';
-var url = window.location.href;
-var access_token = getCookie();
+var url = '';
+var access_token;
 
 function getArtist() {
 
@@ -40,7 +64,7 @@ function generateRandomString(length) {
 
 
 
-function loginToSpotify() {
+function loginToSpotify(createCookie) {
 	var state = generateRandomString(16);
 
 	localStorage.setItem(stateKey, state);
@@ -54,37 +78,26 @@ function loginToSpotify() {
 	url += '&state=' + encodeURIComponent(state);
 
 	window.location = url;
-
-	createCookie();
-
 }
 
 function createCookie() {
-	const cookieExpiration = new Date();
-	cookieExpiration.setTime(cookieExpiration.getTime() + 1 * 3600 * 1000);
-	let dicedUrl = url.substring(url.indexOf('#access_token=') + 14).substring(0, 188);
+	url = window.location.href;
+	let cookieExpiration = new Date();
+	cookieExpiration.setTime(cookieExpiration.getTime() + 1 * 3600 * 1000 - 3000);
+	let dicedUrl = url.substring(url.indexOf('=') + 1, url.indexOf('&'));
 	document.cookie = "access_token=" + dicedUrl + "; expires=" + cookieExpiration.toUTCString() + "; path=/";
 }
 
 function getCookie() {
-	let name = "access_token=";
-	let decodedCookie = decodeURIComponent(document.cookie);
-	let ca = decodedCookie.split(';');
-	for (let i = 0; i < 188; i++) {
-		let c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			console.log(c.substring(name.length, 188));
-			return c.substring(name.length, c.length);
-		}
+	let cookieValue = document.cookie.split('; ').find(row => row.startsWith('access_token='));
+	if(cookieValue) {
+		return cookieValue.split('=')[1];
 	}
 	return "";
 }
 
 function checkCookie() {
-	let access_token = getCookie();
+	access_token = getCookie();
 	if (access_token != "") {
 		console.log(access_token);
 		document.getElementById('login').style.display = "none";
@@ -107,21 +120,21 @@ function getUserProfileData() {
 
 	}).done(function(response) {
 		console.log(response);
-			var results =
-				"<div class='card'>" +
-				"<div class='card-body'>" +
-				"<h2>" + "Logged into Spotify as: " + "</h2>" + "<br>" +
-				"<h2 class='card-body'>" + response.display_name + "</h4>" +
-				"<h4 class='card-body'>" + "Email: " + response.email + "</h4>" +
-				"<h4 class='card-body'>" + "Followers: " + response.followers.total + "</h4>" + 
-				"<h4 class='card-body'>" + "Country: " + response.country + "</h4>" +
-				"<h4 class='card-body'>" + "Membership: " + response.product + "</h4>" +
-				"</div>" +
-				"<div class='card-footer'>" +
-				"<h4> " + "Profile Link: " + response.external_urls.spotify + "</h4>" + 
-				"</div>" +
-				"</div>";
-			$("#user-profile").append(results);
+		var results =
+			"<div class='card'>" +
+			"<div class='card-body'>" +
+			"<h2>" + "Logged into Spotify as: " + "</h2>" + "<br>" +
+			"<h2 class='card-body'>" + response.display_name + "</h4>" +
+			"<h4 class='card-body'>" + "Email: " + response.email + "</h4>" +
+			"<h4 class='card-body'>" + "Followers: " + response.followers.total + "</h4>" +
+			"<h4 class='card-body'>" + "Country: " + response.country + "</h4>" +
+			"<h4 class='card-body'>" + "Membership: " + response.product + "</h4>" +
+			"</div>" +
+			"<div class='card-footer'>" +
+			"<h4> " + "Profile Link: " + response.external_urls.spotify + "</h4>" +
+			"</div>" +
+			"</div>";
+		$("#user-profile").append(results);
 	});
 
 	return deferred.promise();
