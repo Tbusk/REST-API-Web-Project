@@ -11,17 +11,13 @@
 <body>
 
 
-	<div class="container p-5 my-5 bg-dark text-white">
-		<div id="login">
-        <h1>This is an example of the Implicit Grant flow</h1>
+	<div id="login" class="container p-5 my-5 bg-dark text-white">
+        <h1>Login with Spotify</h1>
+        <p>Authorize Spotify to make use of the API</p>
         <button id="login-button" class="btn btn-success" onclick=loginToSpotify()>Log in with Spotify</button>
-      </div>
-      <div id="loggedin">
-        <div id="user-profile">
-        </div>
-        <div id="oauth">
-        </div>
-      </div>
+	</div>
+	
+	<div class ="container p-1 my-3 bg-dark" id="user-profile">
 	</div>
 
 	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
