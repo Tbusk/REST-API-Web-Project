@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Spotify Rankings - REST API Project</title>
+<title>Spotify REST API Web Project</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Stylesheets -->
 <link href="assets/vendor/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 <link href="assets/css/stylesheet.css" rel="stylesheet">
 </head>
 <body>
 
+	<!-- Navbar -->
 	<nav class="navbar navbar-expand-sm navbar-dark"
 		style="padding-right: 14px; background-color: #121212;">
 		<a class="navbar-brand" href="#" style="padding-left: 20px;">Spotify
@@ -20,9 +22,9 @@
 				</li>
 				<li class="nav-item"><a class="nav-link" href="#artist">Artists</a>
 				</li>
-
 			</ul>
 
+			<!-- Searchbar -->
 			<form class="form-inline d-flex">
 				<input class="form-control " type="search"
 					placeholder="Search for Artist" aria-label="Search" id="searchbar"
@@ -34,6 +36,7 @@
 		</div>
 	</nav>
 
+	<!-- Carousel Section -->
 	<div class="container">
 		<div id="img-carousel" class="carousel slide" data-bs-ride="carousel">
 
@@ -87,30 +90,37 @@
 		</div>
 	</div>
 
+	<!-- Login Section -->
 	<div id="login" class="container p-5 my-5 text-white"
 		style="background-color: #121212;">
 		<h1 class="text-center">Login with Spotify</h1>
 		<p class="text-center">Authorize Spotify to make use of the API</p>
-		
+
 		<div class="d-flex justify-content-center">
-		<button id="login-button" class="btn btn-success"
-			onclick=loginToSpotify(createCookie)>Log in with Spotify</button>
-	</div>
+			<button id="login-button" class="btn btn-success"
+				onclick=loginToSpotify(createCookie)>Log in with Spotify</button>
+		</div>
 	</div>
 
+	<!-- User Welcome Jumbotron -->
 	<div class="container p-1 my-3" id="user-profile"></div>
 
+	<!-- Artist will display here -->
 	<div class="container-sm p-1 my-3">
 		<div class="row" id="artist"></div>
 	</div>
+
+	<!-- Footer -->
 	<footer class='footer'>
 		<div class='text-center' style="background-color: #121212;">
 			<p class='text-white' id='footer'>© 2023 Copyright: Trevor Busk</p>
 		</div>
 	</footer>
 
+	<!-- Scripts -->
 	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="assets/vendor/jquery/jquery-3.7.1.min.js"></script>
 	<script src="assets/js/scripts.js"></script>
+
 </body>
 </html>
