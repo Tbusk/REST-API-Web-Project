@@ -8,10 +8,9 @@ body {
 }
 
 #spotifyLogo {
-	max-height: auto;
-	max-width: auto;
-	padding-top: 20px;
-	padding-bottom: 30px;
+	object-fit: cover;
+	padding-top: 10px;
+	padding-bottom: 20px;
 	padding-left: 40px;
 	padding-right: 40px;
 }
@@ -20,20 +19,25 @@ body {
 	max-height: 100%;
 	min-height: 90%;
 	padding-bottom: 15px;
+	object-fit: cover;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #cardName {
-	padding-top: 10px;
-	padding-bottom: 5px;
+	padding-top: 0px;
+	padding-bottom: 20px;
 	font-size: 20px;
 }
 
 #cardFollowers {
 	padding-top: 5px;
-	font-size: 16px;
+	font-size: 18px;
 }
 
 #cardGenre {
+	padding-bottom: 0px;
 	padding-top: 5px;
-	font-size: 16px;
+	font-size: 18px;
 }

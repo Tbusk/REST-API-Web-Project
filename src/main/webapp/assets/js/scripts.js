@@ -151,15 +151,16 @@ function searchForArtist(artist) {
 		
 		$.each(response.artists.items, function(key, value) {
 		var results =
-			"<div class='col-sm col-md-3 mb-2'>" +
-			"<div class='card p-1' style='height: 100%; background-color: #121212;'>" +
+			"<div class='col-lg-3 col-md-4' style='padding-left: 10px; padding-right: 10px;'>" +
+			"<div class='card p-1' style='height: 95%; background-color: #121212;'>" +
 			"<image class='card-img-top' src='http://localhost:8080/Spotify_REST_Web_Project/assets/images/Spotify_Logo_CMYK_White.png' id='spotifyLogo'>" + 
 			"<img class='card-img text-center' src='" + (value.images[1] && value.images[1].url || 'https://developer.spotify.com/images/guidelines/design/icon3@2x.png') + "' id='artistImage'>" + 
 			"<div class='card-body' id='cardBody'>" +
-			"<p class='card-title text-white text-center' id='cardName'>" + value.name + "</p>" + 
 			"<p class='card-text text-white text-center' id='cardFollowers'>" + value.followers.total + " followers" + "</p>" +
 			"<p class='card-text text-white text-center' id='cardGenre'>" + (value.genres[0] || 'No Genre') + "</p>" +
 			"</div>" +
+			"<div class='card-footer text-white text-center' id='cardName'>" + value.name +
+			"</div>" + 
 			"</div>" +
 			"</div>";
 		$("#artist").append(results);
