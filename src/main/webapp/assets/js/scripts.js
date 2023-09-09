@@ -1,31 +1,35 @@
 $(document).ready(function() {
-	if(window.location.href.indexOf('access_token') == -1) {
+	if (window.location.href.indexOf('access_token') == -1) {
 		console.log('NO TOKEN FOUND IN URL');
 		access_token = getCookie();
-		
-		if(access_token != "") {
+
+		if (access_token != "") {
 			console.log('TOKEN FOUND IN COOKIES');
 			document.getElementById('login').style.display = "none";
 			getUserProfileData();
+			
 		} else {
 			console.log('NO TOKEN IN COOKIES');
+			document.getElementById('searchBar').style.display = "none";
 		}
-		
+
 	} else {
-		if(getCookie() != "") {
+		if (getCookie() != "") {
 			console.log('COOKIE FOUND.  TOKEN FOUND');
 			access_token = getCookie();
 			document.getElementById('login').style.display = "none";
 			getUserProfileData();
+			
 		} else {
 			console.log('NO COOKIE FOUND.  CREATING ONE.');
 			createCookie();
 			access_token = getCookie();
 			document.getElementById('login').style.display = "none";
 			getUserProfileData();
+			
 		}
 	}
-	
+
 });
 
 var client_id = '1e734057a1e541cf9ad45ce766b6c519'; // Your client id
@@ -90,7 +94,7 @@ function createCookie() {
 
 function getCookie() {
 	let cookieValue = document.cookie.split('; ').find(row => row.startsWith('access_token='));
-	if(cookieValue) {
+	if (cookieValue) {
 		return cookieValue.split('=')[1];
 	}
 	return "";
@@ -121,20 +125,45 @@ function getUserProfileData() {
 	}).done(function(response) {
 		console.log(response);
 		var results =
-			"<div class='card'>" +
-			"<div class='card-body'>" +
-			"<h2>" + "Logged into Spotify as: " + "</h2>" + "<br>" +
-			"<h2 class='card-body'>" + response.display_name + "</h4>" +
-			"<h4 class='card-body'>" + "Email: " + response.email + "</h4>" +
-			"<h4 class='card-body'>" + "Followers: " + response.followers.total + "</h4>" +
-			"<h4 class='card-body'>" + "Country: " + response.country + "</h4>" +
-			"<h4 class='card-body'>" + "Membership: " + response.product + "</h4>" +
-			"</div>" +
-			"<div class='card-footer'>" +
-			"<h4> " + "Profile Link: " + response.external_urls.spotify + "</h4>" +
-			"</div>" +
+			"<div class='mt-4 p-3 bg-dark text-white rounded'>" +
+			"<h1 class='h1 text-center'>" + "Welcome " + response.display_name + "</h1>" + 
+			"<p class='text-white text-center'>" + "Using this, you can search for artists from Spotify!" + "</p>" + 
 			"</div>";
 		$("#user-profile").append(results);
+	});
+
+	return deferred.promise();
+}
+
+
+function searchForArtist(artist) {
+
+	var deferred = $.Deferred();
+	$.ajax({
+		url: "https://api.spotify.com/v1/search?q=" + artist + "&type=artist&offset=0&limit=40&market=US",
+		type: 'GET',
+		dataType: "json",
+		contentType: "application/json",
+		headers: { Authorization: `Bearer ${access_token}` }
+	}).fail(function(response) {
+
+	}).done(function(response) {
+		
+		$.each(response.artists.items, function(key, value) {
+		var results =
+			"<div class='col-sm col-md-3 mb-2'>" +
+			"<div class='card p-1' style='height: 100%; background-color: #121212;'>" +
+			"<image class='card-img-top' src='http://localhost:8080/Spotify_REST_Web_Project/assets/images/Spotify_Logo_CMYK_White.png' id='spotifyLogo'>" + 
+			"<img class='card-img text-center' src='" + (value.images[1] && value.images[1].url || 'https://developer.spotify.com/images/guidelines/design/icon3@2x.png') + "' id='artistImage'>" + 
+			"<div class='card-body' id='cardBody'>" +
+			"<p class='card-title text-white text-center' id='cardName'>" + value.name + "</p>" + 
+			"<p class='card-text text-white text-center' id='cardFollowers'>" + value.followers.total + " followers" + "</p>" +
+			"<p class='card-text text-white text-center' id='cardGenre'>" + (value.genres[0] || 'No Genre') + "</p>" +
+			"</div>" +
+			"</div>" +
+			"</div>";
+		$("#artist").append(results);
+	});	
 	});
 
 	return deferred.promise();
