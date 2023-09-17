@@ -1,32 +1,39 @@
+
+// When document is loaded, this'll be ran
 $(document).ready(function() {
 
+// If access_token is not found in the url uppon loading
 	if (window.location.href.indexOf('access_token') == -1) {
 
 		console.log('NO TOKEN FOUND IN URL');
 		access_token = getCookie();
 
+		// if access token found in cookies
 		if (access_token != "") {
 
 			console.log('TOKEN FOUND IN COOKIES');
 			document.getElementById('login').style.display = "none";
 			getUserProfileData();
-
+		
+		// if access token is not found in cookies
 		} else {
 
 			console.log('NO TOKEN IN COOKIES');
-			document.getElementById('searchBar').style.display = "none";
+			
 		}
 
 	} else {
+		// If cookie exists and token is in url
 		if (getCookie() != "") {
 
-			console.log('COOKIE FOUND.  TOKEN FOUND');
+			console.log('COOKIE FOUND. TOKEN FOUND');
 			access_token = getCookie();
 			document.getElementById('login').style.display = "none";
 			getUserProfileData();
 
+		// if token is in url and cookie does not exist
 		} else {
-
+		
 			console.log('NO COOKIE FOUND.  CREATING ONE.');
 			createCookie();
 			access_token = getCookie();
@@ -38,12 +45,13 @@ $(document).ready(function() {
 
 });
 
-var client_id = '1e734057a1e541cf9ad45ce766b6c519'; // Your client id
-var redirect_uri = 'http://localhost:8080/Spotify_REST_Web_Project/index.jsp';
+var client_id = '1e734057a1e541cf9ad45ce766b6c519'; // Client ID of Application
+var redirect_uri = 'http://localhost:8080/Spotify_REST_Web_Project/index.jsp'; // Redirect URL after authentication
 var stateKey = 'spotify_auth_state';
 var url = '';
-var access_token;
+var access_token; // Token fetched after authentication used in headers for requests
 
+// Generates a random string for the login process to spotify
 function generateRandomString(length) {
 	var text = '';
 	var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -55,7 +63,7 @@ function generateRandomString(length) {
 }
 
 
-
+// Logging into spotify requires this line of code for implicit authentication process to get the access token. The following is appended to the login url.
 function loginToSpotify(createCookie) {
 	var state = generateRandomString(16);
 
@@ -72,6 +80,8 @@ function loginToSpotify(createCookie) {
 	window.location = url;
 }
 
+
+// Creates a cookie with the same expiration time as the access token with the access token beign retrieved from the url after authentication.
 function createCookie() {
 	url = window.location.href;
 	let cookieExpiration = new Date();
@@ -80,6 +90,7 @@ function createCookie() {
 	document.cookie = "access_token=" + dicedUrl + "; expires=" + cookieExpiration.toUTCString() + "; path=/";
 }
 
+// Used to get the value of the access token from the created cookie if it exists.
 function getCookie() {
 	let cookieValue = document.cookie.split('; ').find(row => row.startsWith('access_token='));
 	if (cookieValue) {
@@ -88,6 +99,7 @@ function getCookie() {
 	return "";
 }
 
+// Used to check if a cookie exists. It'll return true if the cookie exists.
 function checkCookie() {
 	access_token = getCookie();
 	if (access_token != "") {
@@ -99,6 +111,8 @@ function checkCookie() {
 	}
 }
 
+// Getting user profile data and creating a custom welcoming jumbotron for the user.
+// This welcomes the user with their username and explains the purpose of this site.
 function getUserProfileData() {
 
 	var deferred = $.Deferred();
@@ -111,7 +125,6 @@ function getUserProfileData() {
 	}).fail(function(response) {
 
 	}).done(function(response) {
-		console.log(response);
 		var results =
 			"<div class='mt-4 p-3 text-white rounded' style='background-color: #121212;'>" +
 			"<h1 class='h1 text-center'>" + "Welcome " + response.display_name + "</h1>" +
@@ -124,6 +137,8 @@ function getUserProfileData() {
 }
 
 
+// Search for Artist feature.  With the text from the search bar, it'll be used in the get request to return artists in a custom card format
+// with Artist Name, follower count, artist profile image, spotify logo, and top genre for the artist.
 function searchForArtist(artist) {
 
 	var deferred = $.Deferred();
@@ -143,11 +158,13 @@ function searchForArtist(artist) {
 				"<div class='card p-1' style='height: 95%; background-color: #121212;'>" +
 				"<image class='card-img-top' src='http://localhost:8080/Spotify_REST_Web_Project/assets/images/Spotify_Logo_CMYK_White.png' id='spotifyLogo'>" +
 				"<img class='card-img text-center' src='" + (value.images[1] && value.images[1].url || 'https://developer.spotify.com/images/guidelines/design/icon3@2x.png') + "' id='artistImage'>" +
+				"<div class='d-flex flex-column justify-content-between h-100'>" +
 				"<div class='card-body' id='cardBody'>" +
 				"<p class='card-text text-white text-center' id='cardFollowers'>" + (value.followers.total).toLocaleString('en-US') + " followers" + "</p>" +
 				"<p class='card-text text-white text-center' id='cardGenre'>" + (value.genres[0] || 'No Genre') + "</p>" +
 				"</div>" +
 				"<div class='card-footer text-white text-center' id='cardName'>" + value.name +
+				"</div>" +
 				"</div>" +
 				"</div>" +
 				"</div>";

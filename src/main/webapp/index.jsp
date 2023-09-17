@@ -11,16 +11,16 @@
 </head>
 <body>
 
-	<!-- Navbar -->
+	<!-- Navbar, W3Schools & MDBootsrap -->
 	<nav class="navbar navbar-expand-sm navbar-dark"
 		style="padding-right: 14px; background-color: #121212;">
-		<a class="navbar-brand" href="#" style="padding-left: 20px;">Spotify
+		<a class="navbar-brand" href="?#" style="padding-left: 20px;">Spotify
 			REST API Project</a>
 		<div class="collapse navbar-collapse" id="navbarText">
 			<ul class="navbar-nav me-auto">
-				<li class="nav-item active"><a class="nav-link" href="#">Home</a>
+				<li class="nav-item active"><a class="nav-link" href="?#">Home</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="#artist">Artists</a>
+				<li class="nav-item"><a class="nav-link" href="?#artist">Artists</a>
 				</li>
 			</ul>
 
@@ -36,7 +36,7 @@
 		</div>
 	</nav>
 
-	<!-- Carousel Section -->
+	<!-- Carousel Section, W3Schools -->
 	<div class="container">
 		<div id="img-carousel" class="carousel slide" data-bs-ride="carousel">
 
@@ -50,7 +50,7 @@
 					data-bs-slide-to="2"></button>
 			</div>
 
-			<!-- The slideshow/carousel -->
+			<!-- The slideshow/carousel, W3Schools -->
 			<div class="carousel-inner">
 				<div class="carousel-item active">
 					<img
@@ -78,7 +78,7 @@
 				</div>
 			</div>
 
-			<!-- Left and right controls/icons -->
+			<!-- Left and right controls/icons, W3Schools -->
 			<button class="carousel-control-prev" type="button"
 				data-bs-target="#img-carousel" data-bs-slide="prev">
 				<span class="carousel-control-prev-icon"></span>
@@ -90,7 +90,7 @@
 		</div>
 	</div>
 
-	<!-- Login Section -->
+	<!-- Login Section, Custom -->
 	<div id="login" class="container p-5 my-5 text-white"
 		style="background-color: #121212;">
 		<h1 class="text-center">Login with Spotify</h1>
@@ -102,7 +102,7 @@
 		</div>
 	</div>
 
-	<!-- User Welcome Jumbotron -->
+	<!-- User Welcome Jumbotron, W3Schools -->
 	<div class="container p-1 my-3" id="user-profile"></div>
 
 	<!-- Artist will display here -->
@@ -110,7 +110,7 @@
 		<div class="row" id="artist"></div>
 	</div>
 
-	<!-- Footer -->
+	<!-- Footer, MDBootsrap & W3Schools -->
 	<footer class='footer'>
 		<div class='text-center' style="background-color: #121212;">
 			<p class='text-white' id='footer'>© 2023 Copyright: Trevor Busk</p>
